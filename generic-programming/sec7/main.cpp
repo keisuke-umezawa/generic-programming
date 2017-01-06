@@ -1,6 +1,8 @@
 ﻿#include <iostream>
 
 #define NoncommutativeAdditiveSemigroup typename
+#define NoncommutativeAdditiveMonoid typename
+#define NoncommutativeAdditiveGroup typename
 #define Integer typename
 
 template <Integer N> inline
@@ -48,11 +50,28 @@ inline A multiply_semigroup(N n, A a) {
 
 }
 
+template <NoncommutativeAdditiveMonoid A, Integer N>
+A multiply_monoid(N n, A a) {
+    if (n == 0) {
+        return A(0);
+    }
+    return multiply_semigroup(n, a);
+}
+
+template <NoncommutativeAdditiveGroup A, Integer N>
+A multiply_group(N n, A a) {
+    if (n < 0) {
+        n = -n;
+        a = -a;
+    }
+    return multiply_monoid(n, a);
+}
+
 int main(int argc, char** argv)
 {
-    const int n = 11;
+    const int n = -11;
     const int value = 5;
 
-    std::cout << multiply_semigroup(n, value) << std::endl;
+    std::cout << multiply_group(n, value) << std::endl;
     return 0;
 }
